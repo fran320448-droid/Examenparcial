@@ -1,16 +1,16 @@
 services:
   - type: web
     name: techservices-api
-    runtime: java
+    runtime: docker
     plan: free
-    buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/techservices-api-1.0.0.jar"
     envVars:
-      - key: JAVA_VERSION
-        value: "21"
-      - key: DB_URL
+      - key: DB_HOST
         sync: false
-      - key: DB_USERNAME
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
         sync: false
       - key: DB_PASSWORD
         sync: false
