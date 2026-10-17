@@ -1,0 +1,123 @@
+{
+  "info": {
+    "name": "TechServices Peru - API Clientes",
+    "description": "Coleccion para probar GET /api/clientes/{id} de la API segura de TechServices Peru. Ejecutar primero '1 Consulta exitosa' y verificar en phpMyAdmin que el balance de tokens se descuenta.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "apiKey", "value": "MI_API_KEY_2026" },
+    { "key": "token", "value": "TOKEN_SEGURO_123456" }
+  ],
+  "item": [
+    {
+      "name": "1 Consulta exitosa",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "1"]
+        },
+        "description": "Esperado: HTTP 200 con el cliente y tokensRestantes menos 1."
+      }
+    },
+    {
+      "name": "2 API Key incorrecta",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-api-key", "value": "KEY_INCORRECTA" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "1"]
+        },
+        "description": "Esperado: HTTP 401."
+      }
+    },
+    {
+      "name": "3 Token incorrecto",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "Authorization", "value": "Bearer TOKEN_INCORRECTO" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "1"]
+        },
+        "description": "Esperado: HTTP 401."
+      }
+    },
+    {
+      "name": "4 Sin encabezados",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "1"]
+        },
+        "description": "Esperado: HTTP 401."
+      }
+    },
+    {
+      "name": "5 Usuario inactivo",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-api-key", "value": "API_KEY_USUARIO4_2026" },
+          { "key": "Authorization", "value": "Bearer TOKEN_USUARIO4_111111111" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "1"]
+        },
+        "description": "Esperado: HTTP 403."
+      }
+    },
+    {
+      "name": "6 Cliente inexistente",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-api-key", "value": "{{apiKey}}" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/999",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "999"]
+        },
+        "description": "Esperado: HTTP 404 y NO se descuenta ningun token."
+      }
+    },
+    {
+      "name": "7 Usuario sin tokens",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "x-api-key", "value": "API_KEY_USUARIO3_2026" },
+          { "key": "Authorization", "value": "Bearer TOKEN_USUARIO3_555555555" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/clientes/1",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "clientes", "1"]
+        },
+        "description": "Esperado: HTTP 429."
+      }
+    }
+  ]
+}
